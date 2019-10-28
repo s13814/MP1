@@ -1,6 +1,7 @@
 package com.example.mp1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -29,12 +30,9 @@ public class ProductListActivity extends AppCompatActivity {
         RecyclerView rvProductList = findViewById(R.id.rvProductList);
         db = ProductDB.getDatabase(this);
         //db.initDB();
-        List<Product> lp = getProducts();
+        //List<Product> lp = getProducts();
 
-        List<Product> a = new ArrayList<Product>();
-        a.add(new Product(1,"a", 5, false));
-
-        final ProductAdapter adapter = new ProductAdapter(this, a);
+        final ProductAdapter adapter = new ProductAdapter(this);
         setProducts(adapter);
         rvProductList.setLayoutManager(new LinearLayoutManager(this));
         rvProductList.setAdapter(adapter);
@@ -50,9 +48,9 @@ public class ProductListActivity extends AppCompatActivity {
         });
     }
 
-    private List<Product> getProducts(){
-        List<Product> lp = new ArrayList<>();
-        //lp = db.productDao().getAllProducts();
+    /*private List<Product> getProducts(){
+        LiveData<List<Product>> lp = new LiveData<List<Product>>();
+        lp = db.productDao().getAllProducts();
         return lp;
-    }
+    }*/
 }

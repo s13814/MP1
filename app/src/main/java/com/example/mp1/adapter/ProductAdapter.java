@@ -23,8 +23,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private List<Product> list;
     private Context context;
 
-    public ProductAdapter( Context context, List<Product> list){
-        this.list = list;
+    public ProductAdapter( Context context){
         this.context = context;
     }
 
@@ -41,12 +40,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if(list != null) {
             Product p = list.get(position);
             holder.tvName.setText(p.getProductName());
-            holder.tvPrice.setText(p.getPrice());
-            if (p.getBought()) {
+            holder.tvPrice.setText(String.valueOf(p.getPrice()));
+            if (p.getBought())
                 holder.cbBought.setChecked(true);
-            } else {
+            else
                 holder.cbBought.setChecked(false);
-            }
         } else{
             holder.tvName.setText("None");
         }
@@ -62,6 +60,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public void setProducts(List<Product> products){
         this.list = products;
+        notifyDataSetChanged();
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Product {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int productId;
 
     @ColumnInfo(name = "productName")
@@ -19,8 +19,7 @@ public class Product {
     @ColumnInfo(name = "bought")
     private boolean bought;
 
-    public Product(int productId, String productName, int price, boolean bought){
-        this.productId = productId;
+    public Product(String productName, int price, boolean bought){
         this.productName = productName;
         this.price = price;
         this.bought = bought;

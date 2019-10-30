@@ -29,6 +29,10 @@ public class ProductRepository{
         new insertAsyncTask(productDao).execute(product);
     }
 
+    public void update(Product product){
+        new updateAsyncTask(productDao).execute(product);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Product, Void, Void> {
 
         private ProductDAO asyncTaskDao;
@@ -40,6 +44,21 @@ public class ProductRepository{
         @Override
         protected Void doInBackground(final Product... params) {
             asyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class updateAsyncTask extends AsyncTask<Product, Void, Void>{
+
+        private ProductDAO asyncTaskDao;
+
+        updateAsyncTask(ProductDAO dao) {
+            asyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Product... params) {
+            asyncTaskDao.update(params[0]);
             return null;
         }
     }

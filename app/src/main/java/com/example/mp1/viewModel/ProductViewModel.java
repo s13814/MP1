@@ -31,4 +31,8 @@ public class ProductViewModel extends AndroidViewModel {
     public void insert (Product product){
         repository.insert(product);
     }
+
+    public void update (Product product) {
+        repository.update(product);
+    }
 }

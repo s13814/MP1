@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.mp1.DB.Product;
 import com.example.mp1.DB.ProductDB;
@@ -26,6 +29,8 @@ import java.util.List;
 public class ProductListActivity extends AppCompatActivity {
 
     private ProductDB db;
+
+    private ProductViewModel productViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +46,23 @@ public class ProductListActivity extends AppCompatActivity {
         setProducts(adapter);
         rvProductList.setLayoutManager(new LinearLayoutManager(this));
         rvProductList.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Product product) {
+                if(product.getBought())
+                    product.setBought(false);
+                else {
+                    product.setBought(true);
+                    Toast.makeText(ProductListActivity.this, product.getProductName()+ " is bought!", Toast.LENGTH_LONG).show();
+                }
+                productViewModel.update(product);
+            }
+        });
     }
 
     private void setProducts(final ProductAdapter adapter){
-        ProductViewModel productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
+        productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
         productViewModel.getAllProducts().observe(this, new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {
@@ -53,16 +71,32 @@ public class ProductListActivity extends AppCompatActivity {
         });
     }
 
+
+
     public void clickAdd(View view){
         AlertDialog.Builder ad = new AlertDialog.Builder(ProductListActivity.this);
         ad.setTitle("Add product");
         ad.setMessage("Enter new product");
 
+        LinearLayout layout = new LinearLayout(ProductListActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText name = new EditText(ProductListActivity.this);
+        name.setHint("Name");
+
+        final EditText price = new EditText(ProductListActivity.this);
+        price.setHint("Price");
+        price.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        layout.addView(name);
+        layout.addView(price);
+
         ad.setPositiveButton("Add",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        productViewModel.insert(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
+                        Log.i("ProductListActivity", name.getText().toString());
                     }
                 });
 
@@ -73,18 +107,6 @@ public class ProductListActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-
-        LinearLayout layout = new LinearLayout(ProductListActivity.this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-        EditText name = new EditText(ProductListActivity.this);
-        name.setHint("Name");
-
-        EditText price = new EditText(ProductListActivity.this);
-        price.setHint("Price");
-
-        layout.addView(name);
-        layout.addView(price);
 
         ad.setView(layout, 50, 0, 50, 0);
         ad.show();

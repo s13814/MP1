@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "33e2ef2b5c9878b0ca53614bb9dbd563",
+    "identityHash": "a2a3dc38b16590a7a76aa06025319d79",
     "entities": [
       {
         "tableName": "Product",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`productId` INTEGER NOT NULL, `productName` TEXT, `price` INTEGER NOT NULL, `bought` INTEGER NOT NULL, PRIMARY KEY(`productId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`productId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `productName` TEXT, `price` INTEGER NOT NULL, `bought` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "productId",
@@ -37,7 +37,7 @@
           "columnNames": [
             "productId"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -46,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '33e2ef2b5c9878b0ca53614bb9dbd563')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2a3dc38b16590a7a76aa06025319d79')"
     ]
   }
 }

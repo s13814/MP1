@@ -22,6 +22,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> list;
     private Context context;
+    private OnItemClickListener listener;
 
     public ProductAdapter( Context context){
         this.context = context;
@@ -63,7 +64,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         notifyDataSetChanged();
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ProductViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvName;
         TextView tvPrice;
@@ -75,21 +76,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvPrice = itemView.findViewById(R.id.tv_price);
             cbBought = itemView.findViewById(R.id.cb_bought);
 
-            itemView.setOnClickListener(this);
-
-            cbBought.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        Toast.makeText(ProductAdapter.this.context, tvName.getText()+ "is bought!", Toast.LENGTH_LONG).show();
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if(listener != null && position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(list.get(position));
                     }
                 }
             });
         }
+    }
 
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(ProductAdapter.this.context, "Selected item is " + tvName.getText(), Toast.LENGTH_LONG).show();
-        }
+    public interface OnItemClickListener{
+        void onItemClick(Product product);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }

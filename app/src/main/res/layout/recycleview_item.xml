@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -22,19 +23,20 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="-20dp"
         android:layout_marginBottom="4dp"
         android:text="items" />
 
     <CheckBox
         android:id="@+id/cb_bought"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="350dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="-30dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.69"
-        app:layout_constraintStart_toEndOf="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintStart_toEndOf="@+id/tv_name" />
 </LinearLayout>

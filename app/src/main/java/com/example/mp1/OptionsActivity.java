@@ -25,7 +25,6 @@ public class OptionsActivity extends AppCompatActivity {
     private TextView tvSize;
     private TextView tvColor;
     private SharedPreferences sp;
-    private SharedPreferences.Editor editor;
     private Button btSave;
     private TextView tvOptions;
     private int color;
@@ -104,7 +103,8 @@ public class OptionsActivity extends AppCompatActivity {
     public void saveClick(View view){
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("colorTheme", color);
-        editor.putInt("size", Integer.parseInt(etSize.getText().toString()));
+        if(!etSize.getText().toString().equals(""))
+            editor.putInt("size", Integer.parseInt(etSize.getText().toString()));
         editor.apply();
         finish();
     }

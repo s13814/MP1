@@ -1,5 +1,6 @@
 package com.example.mp1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -8,12 +9,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import        android.view.Menu;
+import        android.view.MenuItem;
+import        android.view.MenuInflater;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -28,8 +32,6 @@ import java.util.List;
 
 public class ProductListActivity extends AppCompatActivity {
 
-    private ProductDB db;
-
     private ProductViewModel productViewModel;
 
     @Override
@@ -38,14 +40,11 @@ public class ProductListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_list);
 
         RecyclerView rvProductList = findViewById(R.id.rvProductList);
-        db = ProductDB.getDatabase(this);
-        //db.initDB();
-        //List<Product> lp = getProducts();
-
         final ProductAdapter adapter = new ProductAdapter(this);
         setProducts(adapter);
         rvProductList.setLayoutManager(new LinearLayoutManager(this));
         rvProductList.setAdapter(adapter);
+        registerForContextMenu(rvProductList);
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
             @Override
@@ -59,6 +58,14 @@ public class ProductListActivity extends AppCompatActivity {
                 productViewModel.update(product);
             }
         });
+
+        /*adapter.setOnItemLongClickListener(new ProductAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick() {
+                Toast.makeText(ProductListActivity.this, "Long click", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });*/
     }
 
     private void setProducts(final ProductAdapter adapter){
@@ -71,7 +78,14 @@ public class ProductListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(item.getTitle() == "Delete")
+            Toast.makeText(ProductListActivity.this, Long.toString(info.id), Toast.LENGTH_LONG).show();
 
+        return super.onContextItemSelected(item);
+    }
 
     public void clickAdd(View view){
         AlertDialog.Builder ad = new AlertDialog.Builder(ProductListActivity.this);
@@ -111,9 +125,4 @@ public class ProductListActivity extends AppCompatActivity {
         ad.setView(layout, 50, 0, 50, 0);
         ad.show();
     }
-    /*private List<Product> getProducts(){
-        LiveData<List<Product>> lp = new LiveData<List<Product>>();
-        lp = db.productDao().getAllProducts();
-        return lp;
-    }*/
 }

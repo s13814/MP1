@@ -8,32 +8,35 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    SharedPreferences sp;
+    private SharedPreferences sp;
+    private Button btList;
+    private Button btOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        btList = findViewById(R.id.listButton);
+        btOptions = findViewById(R.id.optionsButton);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //et.setText(sp.getString("string1", ""));
-        //cb.setChecked(sp.getBoolean("bool1", false));
+        btList.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btList.setTextSize(sp.getInt("size", 14));
+        btOptions.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btOptions.setTextSize(sp.getInt("size", 14));
     }
 
     public void clickOptions(View view){
-        //SharedPreferences.Editor editor = sp.edit();
-        //editor.putString("string1", et.getText().toString());
-        //editor.putBoolean("bool1", cb.isChecked());
-        //editor.apply();
         Intent i = new Intent(this, OptionsActivity.class);
         startActivity(i);
     }

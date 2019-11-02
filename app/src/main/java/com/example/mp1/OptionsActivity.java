@@ -25,6 +25,7 @@ public class OptionsActivity extends AppCompatActivity {
     private TextView tvSize;
     private TextView tvColor;
     private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
     private Button btSave;
     private TextView tvOptions;
     private int color;
@@ -51,12 +52,19 @@ public class OptionsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        etSize.setTextColor(sp.getInt("colorTheme", 0xFFFFFF));
-        tvSize.setTextColor(sp.getInt("colorTheme", 0xFFFFFF));
-        tvColor.setTextColor(sp.getInt("colorTheme", 0xFFFFFF));
-        btColor.setTextColor(sp.getInt("colorTheme", 0xFFFFFF));
-        btSave.setTextColor(sp.getInt("colorTheme", 0xFFFFFF));
-        tvOptions.setTextColor(sp.getInt("colorTheme", 0xFFFFFF));
+        etSize.setTextColor(sp.getInt("colorTheme", 0x000000));
+        tvSize.setTextColor(sp.getInt("colorTheme", 0x000000));
+        tvColor.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btColor.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btSave.setTextColor(sp.getInt("colorTheme", 0x000000));
+        tvOptions.setTextColor(sp.getInt("colorTheme", 0x000000));
+
+        etSize.setTextSize(sp.getInt("size", 14));
+        tvSize.setTextSize(sp.getInt("size", 14));
+        tvColor.setTextSize(sp.getInt("size", 14));
+        btColor.setTextSize(sp.getInt("size", 14));
+        btSave.setTextSize(sp.getInt("size", 14));
+        tvOptions.setTextSize(sp.getInt("size", 14));
     }
 
     public void colorClick(){
@@ -82,7 +90,6 @@ public class OptionsActivity extends AppCompatActivity {
                         btSave.setTextColor(selectedColor);
                         tvOptions.setTextColor(selectedColor);
                         color = selectedColor;
-
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -97,6 +104,7 @@ public class OptionsActivity extends AppCompatActivity {
     public void saveClick(View view){
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("colorTheme", color);
+        editor.putInt("size", Integer.parseInt(etSize.getText().toString()));
         editor.apply();
         finish();
     }

@@ -2,9 +2,12 @@ package com.example.mp1.adapter;
 
 import android.app.LauncherActivity;
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mp1.DB.Product;
+import com.example.mp1.ProductListActivity;
 import com.example.mp1.R;
 
 import java.util.List;
@@ -23,6 +27,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private List<Product> list;
     private Context context;
     private OnItemClickListener listener;
+    //private OnItemLongClickListener longListener;
 
     public ProductAdapter( Context context){
         this.context = context;
@@ -64,7 +69,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         notifyDataSetChanged();
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder{
+    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         TextView tvName;
         TextView tvPrice;
@@ -75,6 +80,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvName = itemView.findViewById(R.id.tv_name);
             tvPrice = itemView.findViewById(R.id.tv_price);
             cbBought = itemView.findViewById(R.id.cb_bought);
+            itemView.setOnCreateContextMenuListener(this);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -85,6 +91,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     }
                 }
             });
+
+            /*itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int position = getAdapterPosition();
+                    if(longListener != null && position != RecyclerView.NO_POSITION){
+                        longListener.onItemLongClick();
+                    }
+                    return true;
+                }
+            });*/
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Options");
+            menu.add(0, v.getId(), 0, "Edit");
+            menu.add(0, v.getId(), 0, "Delete");
         }
     }
 
@@ -95,4 +119,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
+
+    /*public interface OnItemLongClickListener{
+        boolean onItemLongClick();
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener){
+        this.longListener = listener;
+    }*/
 }

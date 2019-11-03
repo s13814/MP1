@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import        android.view.Menu;
@@ -33,6 +34,7 @@ import java.util.List;
 public class ProductListActivity extends AppCompatActivity {
 
     private ProductViewModel productViewModel;
+    private final ProductAdapter adapter = new ProductAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,11 @@ public class ProductListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_list);
 
         RecyclerView rvProductList = findViewById(R.id.rvProductList);
-        final ProductAdapter adapter = new ProductAdapter(this);
+
         setProducts(adapter);
-        rvProductList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager rlm = new LinearLayoutManager(this);
+        rvProductList.setLayoutManager(rlm);
+        rvProductList.addItemDecoration(new DividerItemDecoration(rvProductList.getContext(), rlm.getOrientation()));
         rvProductList.setAdapter(adapter);
         registerForContextMenu(rvProductList);
 
@@ -80,10 +84,49 @@ public class ProductListActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if(item.getTitle() == "Delete")
-            Toast.makeText(ProductListActivity.this, Long.toString(info.id), Toast.LENGTH_LONG).show();
+        if(item.getTitle() == "Edit"){
+            final Product productToEdit = adapter.getProductAtIndex(item.getGroupId());
+            AlertDialog.Builder ad = new AlertDialog.Builder(ProductListActivity.this);
+            ad.setTitle("Edit product");
+            ad.setMessage("Change existing product");
 
+            LinearLayout layout = new LinearLayout(ProductListActivity.this);
+            layout.setOrientation(LinearLayout.VERTICAL);
+
+            final EditText name = new EditText(ProductListActivity.this);
+            name.setText(productToEdit.getProductName());
+
+            final EditText price = new EditText(ProductListActivity.this);
+            price.setText(String.valueOf(productToEdit.getPrice()));
+            price.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+            layout.addView(name);
+            layout.addView(price);
+
+            ad.setPositiveButton("Edit",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            productToEdit.setProductName(name.getText().toString());
+                            productToEdit.setPrice(Integer.parseInt(price.getText().toString()));
+                            productViewModel.update(productToEdit);
+                        }
+                    });
+
+            ad.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+            ad.setView(layout, 50, 0, 50, 0);
+            ad.show();
+        }
+        else if(item.getTitle() == "Delete") {
+            productViewModel.delete(adapter.getProductAtIndex(item.getGroupId()));
+        }
         return super.onContextItemSelected(item);
     }
 
@@ -110,7 +153,6 @@ public class ProductListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         productViewModel.insert(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
-                        Log.i("ProductListActivity", name.getText().toString());
                     }
                 });
 

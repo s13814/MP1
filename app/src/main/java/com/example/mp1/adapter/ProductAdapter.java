@@ -96,9 +96,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle("Options");
-            menu.add(0, v.getId(), 0, "Edit");
-            menu.add(0, v.getId(), 0, "Delete");
+            menu.add(this.getAdapterPosition(), v.getId(), 0, "Edit");
+            menu.add(this.getAdapterPosition(), v.getId(), 0, "Delete");
         }
+    }
+
+    public Product getProductAtIndex(int index){
+
+        return list.get(index);
     }
 
     public interface OnItemClickListener{

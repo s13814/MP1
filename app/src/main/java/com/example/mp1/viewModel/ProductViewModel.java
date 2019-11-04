@@ -7,8 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.mp1.DB.Product;
-import com.example.mp1.DB.ProductDAO;
-import com.example.mp1.DB.ProductDB;
 import com.example.mp1.repository.ProductRepository;
 
 import java.util.List;

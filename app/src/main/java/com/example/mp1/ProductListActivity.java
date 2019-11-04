@@ -3,32 +3,24 @@ package com.example.mp1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import        android.view.Menu;
-import        android.view.MenuItem;
-import        android.view.MenuInflater;
+import android.view.MenuItem;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mp1.DB.Product;
-import com.example.mp1.DB.ProductDB;
 import com.example.mp1.adapter.ProductAdapter;
 import com.example.mp1.viewModel.ProductViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListActivity extends AppCompatActivity {
@@ -62,14 +54,6 @@ public class ProductListActivity extends AppCompatActivity {
                 productViewModel.update(product);
             }
         });
-
-        /*adapter.setOnItemLongClickListener(new ProductAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick() {
-                Toast.makeText(ProductListActivity.this, "Long click", Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });*/
     }
 
     private void setProducts(final ProductAdapter adapter){

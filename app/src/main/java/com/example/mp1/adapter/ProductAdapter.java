@@ -1,23 +1,17 @@
 package com.example.mp1.adapter;
 
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mp1.DB.Product;
-import com.example.mp1.ProductListActivity;
 import com.example.mp1.R;
 
 import java.util.List;
@@ -27,7 +21,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private List<Product> list;
     private Context context;
     private OnItemClickListener listener;
-    //private OnItemLongClickListener longListener;
 
     public ProductAdapter( Context context){
         this.context = context;
@@ -113,12 +106,4 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
-
-    /*public interface OnItemLongClickListener{
-        boolean onItemLongClick();
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener listener){
-        this.longListener = listener;
-    }*/
 }

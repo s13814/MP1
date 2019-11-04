@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -102,7 +101,7 @@ public class OptionsActivity extends AppCompatActivity {
 
     public void saveClick(View view){
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("colorTheme", color);
+        editor.putInt("colorTheme", (color == 0)?-16777216:color);
         if(!etSize.getText().toString().equals(""))
             editor.putInt("size", Integer.parseInt(etSize.getText().toString()));
         editor.apply();

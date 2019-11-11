@@ -8,6 +8,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.view.MenuItem;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -137,6 +142,12 @@ public class ProductListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         productViewModel.insert(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
+
+                        String myIntent = "com.example.mp1.intent.action.EVENT1";
+                        //String permission = Manifest.permission.READ_CALENDAR;
+
+                        Intent i = new Intent(myIntent);
+                        sendBroadcast(i);
                     }
                 });
 

@@ -147,6 +147,9 @@ public class ProductListActivity extends AppCompatActivity {
                         //String permission = Manifest.permission.READ_CALENDAR;
 
                         Intent i = new Intent(myIntent);
+                        i.putExtra("name", name.getText().toString());
+                        i.putExtra("price", Integer.parseInt(price.getText().toString()));
+
                         sendBroadcast(i);
                     }
                 });

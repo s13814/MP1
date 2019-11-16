@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mp1">
 
+    <permission-group android:name="com.example.my_permissions"
+        android:label="my permissions group" />
+
+    <permission android:name="com.example.my_permissions.MY_PERMISSION"
+        android:permissionGroup="com.example.my_permissions"
+        android:label="my permission" />
+
+    <uses-permission android:name="com.example.my_permissions.MY_PERMISSION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProductListActivity"></activity>
+        <activity android:name=".ProductListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <activity android:name=".OptionsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -19,5 +32,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -144,13 +144,12 @@ public class ProductListActivity extends AppCompatActivity {
                         productViewModel.insert(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
 
                         String myIntent = "com.example.mp1.intent.action.EVENT1";
-                        //String permission = Manifest.permission.READ_CALENDAR;
 
                         Intent i = new Intent(myIntent);
                         i.putExtra("name", name.getText().toString());
                         i.putExtra("price", Integer.parseInt(price.getText().toString()));
 
-                        sendBroadcast(i);
+                        sendBroadcast(i, "com.example.my_permissions.MY_PERMISSION");
                     }
                 });
 

@@ -142,6 +142,8 @@ public class ProductListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         productViewModel.insert(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
+                        //DatabaseReference drp = dr.push();
+                        //drp.setValue(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
 
                         String myIntent = "com.example.mp1.intent.action.EVENT1";
 

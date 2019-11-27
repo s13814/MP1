@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class Product {
 
     @PrimaryKey(autoGenerate = true)
-    private int productId;
+   private int productId;
 
     @ColumnInfo(name = "productName")
     private String productName;

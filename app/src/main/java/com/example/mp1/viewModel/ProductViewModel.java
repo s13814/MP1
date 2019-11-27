@@ -8,17 +8,18 @@ import androidx.lifecycle.LiveData;
 
 import com.example.mp1.DB.Product;
 import com.example.mp1.repository.ProductRepository;
+import com.example.mp1.repository.ProductRepositoryFirebase;
 
 import java.util.List;
 
 public class ProductViewModel extends AndroidViewModel {
 
-    private ProductRepository repository;
+    private ProductRepositoryFirebase repository;
     private LiveData<List<Product>> allProducts;
 
     public ProductViewModel(@NonNull Application application) {
         super(application);
-        repository = new ProductRepository(application);
+        repository = new ProductRepositoryFirebase(application);
         allProducts = repository.getAllProducts();
     }
 

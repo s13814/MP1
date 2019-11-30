@@ -1,5 +1,6 @@
 package com.example.mp1.DB;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,8 +8,8 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Product {
 
-    @PrimaryKey(autoGenerate = true)
-   private int productId;
+    @PrimaryKey
+   private @NonNull String productId;
 
     @ColumnInfo(name = "productName")
     private String productName;
@@ -19,13 +20,14 @@ public class Product {
     @ColumnInfo(name = "bought")
     private boolean bought;
 
-    public Product(String productName, int price, boolean bought){
+    public Product(String productName, int price, boolean bought, String productId){
         this.productName = productName;
         this.price = price;
         this.bought = bought;
+        this.productId = productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
@@ -41,7 +43,7 @@ public class Product {
         this.bought = bought;
     }
 
-    public int getProductId(){
+    public String getProductId(){
         return this.productId;
     }
 

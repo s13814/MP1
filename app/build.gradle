@@ -6,7 +6,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.mp1"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -42,4 +42,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0"
     implementation "com.google.android.material:material:1.0.0"
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
 }

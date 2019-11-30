@@ -54,9 +54,9 @@ public class ProductListActivity extends AppCompatActivity {
                     product.setBought(false);
                 else {
                     product.setBought(true);
-                    Toast.makeText(ProductListActivity.this, product.getProductName()+ " is bought!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ProductListActivity.this, product.getProductName()+ " is bought!", Toast.LENGTH_LONG).show();
                 }
-                productViewModel.update(product);
+                //productViewModel.update(product);
             }
         });
     }
@@ -72,7 +72,7 @@ public class ProductListActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
+    public boolean onContextItemSelected(@NonNull final MenuItem item) {
         if(item.getTitle() == "Edit"){
             final Product productToEdit = adapter.getProductAtIndex(item.getGroupId());
             AlertDialog.Builder ad = new AlertDialog.Builder(ProductListActivity.this);
@@ -98,7 +98,7 @@ public class ProductListActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             productToEdit.setProductName(name.getText().toString());
                             productToEdit.setPrice(Integer.parseInt(price.getText().toString()));
-                            productViewModel.update(productToEdit);
+                            productViewModel.update(productToEdit, item.getGroupId());
                         }
                     });
 
@@ -114,7 +114,8 @@ public class ProductListActivity extends AppCompatActivity {
             ad.show();
         }
         else if(item.getTitle() == "Delete") {
-            productViewModel.delete(adapter.getProductAtIndex(item.getGroupId()));
+            //productViewModel.delete(adapter.getProductAtIndex(item.getGroupId()));
+            productViewModel.delete(item.getGroupId());
         }
         return super.onContextItemSelected(item);
     }
@@ -141,7 +142,7 @@ public class ProductListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        productViewModel.insert(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
+                        productViewModel.insert(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false, ""));
                         //DatabaseReference drp = dr.push();
                         //drp.setValue(new Product(name.getText().toString(), Integer.parseInt(price.getText().toString()), false));
 

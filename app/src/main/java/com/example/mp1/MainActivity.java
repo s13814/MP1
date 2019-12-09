@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private Button btList;
     private Button btOptions;
+    private Button btMap;
     private FirebaseAuth fa;
 
     @Override
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         btList = findViewById(R.id.listButton);
         btOptions = findViewById(R.id.optionsButton);
+        btMap = findViewById(R.id.mapButton);
         fa = FirebaseAuth.getInstance();
         loginOrRegister();
     }
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         btList.setTextSize(sp.getInt("size", 14));
         btOptions.setTextColor(sp.getInt("colorTheme", 0x000000));
         btOptions.setTextSize(sp.getInt("size", 14));
+        btMap.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btMap.setTextSize(sp.getInt("size", 14));
     }
 
     public void clickOptions(View view){
@@ -56,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickList(View view){
         Intent i = new Intent(this, ProductListActivity.class);
+        startActivity(i);
+    }
+
+    public void clickMap(View view){
+        Intent i = new Intent(this, MapsActivity.class);
+        startActivity(i);
+    }
+
+    public void clickShopList(View view){
+        Intent i = new Intent(this, ShopListActivity.class);
         startActivity(i);
     }
 

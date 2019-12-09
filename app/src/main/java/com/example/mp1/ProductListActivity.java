@@ -31,7 +31,7 @@ import java.util.List;
 public class ProductListActivity extends AppCompatActivity {
 
     private ProductViewModel productViewModel;
-    private final ProductAdapter adapter = new ProductAdapter(this);
+    private final ProductAdapter adapter = new ProductAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +54,9 @@ public class ProductListActivity extends AppCompatActivity {
                     product.setBought(false);
                 else {
                     product.setBought(true);
-                    //Toast.makeText(ProductListActivity.this, product.getProductName()+ " is bought!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProductListActivity.this, product.getProductName()+ " is bought!", Toast.LENGTH_LONG).show();
                 }
-                //productViewModel.update(product);
+                productViewModel.update(product);
             }
         });
     }
@@ -98,7 +98,7 @@ public class ProductListActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             productToEdit.setProductName(name.getText().toString());
                             productToEdit.setPrice(Integer.parseInt(price.getText().toString()));
-                            productViewModel.update(productToEdit, item.getGroupId());
+                            productViewModel.update(productToEdit);
                         }
                     });
 

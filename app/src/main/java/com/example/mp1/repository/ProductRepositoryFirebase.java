@@ -46,11 +46,11 @@ public class ProductRepositoryFirebase {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 List<Product> tmp = allProducts.getValue();
-                Product productToUpdate = null;
                 for (Product product : tmp){
                     if(product.getProductId().equals(dataSnapshot.getKey())){
                         product.setProductName(dataSnapshot.child("productName").getValue().toString());
                         product.setPrice(((Long)dataSnapshot.child("price").getValue()).intValue());
+                        product.setBought((Boolean)dataSnapshot.child("bought").getValue());
                     }
                 }
                 allProducts.setValue(tmp);
@@ -109,12 +109,9 @@ public class ProductRepositoryFirebase {
         drp.setValue(product);
     }
 
-    public void update(Product product, int idProduct){
-        Product productToUpdate = allProducts.getValue().get(idProduct);
-        DatabaseReference drp = dr.child(productToUpdate.getProductId());
-        product.setProductId(productToUpdate.getProductId());
+    public void update(Product product){
+        DatabaseReference drp = dr.child(product.getProductId());
         drp.setValue(product);
-
     }
 
     public void delete(int idProduct){

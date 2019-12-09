@@ -19,11 +19,9 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> list;
-    private Context context;
     private OnItemClickListener listener;
 
-    public ProductAdapter( Context context){
-        this.context = context;
+    public ProductAdapter(){
     }
 
     @NonNull
@@ -95,7 +93,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     public Product getProductAtIndex(int index){
-
         return list.get(index);
     }
 

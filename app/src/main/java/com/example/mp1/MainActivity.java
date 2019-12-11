@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btList;
     private Button btOptions;
     private Button btMap;
+    private Button btShopList;
     private FirebaseAuth fa;
 
     @Override
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         btList = findViewById(R.id.listButton);
         btOptions = findViewById(R.id.optionsButton);
         btMap = findViewById(R.id.mapButton);
+        btShopList = findViewById(R.id.shopListButton);
         fa = FirebaseAuth.getInstance();
         loginOrRegister();
     }
@@ -45,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        btList.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btList.setTextColor(sp.getInt("colorTheme", 0xFF000000));
         btList.setTextSize(sp.getInt("size", 14));
-        btOptions.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btOptions.setTextColor(sp.getInt("colorTheme", 0xFF000000));
         btOptions.setTextSize(sp.getInt("size", 14));
-        btMap.setTextColor(sp.getInt("colorTheme", 0x000000));
+        btMap.setTextColor(sp.getInt("colorTheme", 0xFF000000));
         btMap.setTextSize(sp.getInt("size", 14));
+        btShopList.setTextColor(sp.getInt("colorTheme", 0xFF000000));
+        btShopList.setTextSize(sp.getInt("size", 14));
     }
 
     public void clickOptions(View view){

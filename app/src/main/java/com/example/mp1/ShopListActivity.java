@@ -3,15 +3,21 @@ package com.example.mp1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -26,15 +32,17 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShopListActivity extends AppCompatActivity {
 
     private ShopViewModel shopViewModel;
-    private final ShopAdapter adapter = new ShopAdapter();
-    private FusedLocationProviderClient mflc;
-    final Double[] latitude = new Double[1];
-    final Double[] longitude = new Double[1];
+    private ShopAdapter adapter = new ShopAdapter();
+    private double latitude;
+    private double longitude;
 
-
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,34 +58,70 @@ public class ShopListActivity extends AppCompatActivity {
         rvShopList.setAdapter(adapter);
         registerForContextMenu(rvShopList);
 
-        mflc = LocationServices.getFusedLocationProviderClient(ShopListActivity.this);
+
+        /*mflc = LocationServices.getFusedLocationProviderClient(this);
         mflc.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        latitude[0] = location.getLatitude();
-                        longitude[0] = location.getLongitude();
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
                     }
-                });
+                });*/
+
+        int minCzas = 0;
+        int minDystans = 0;
+
+        LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationListener ll = new LocationListener() {
+
+            public void onLocationChanged(Location location) {
+                //Log.i("location",location.getLatitude()+" "+location.getLongitude());
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, minCzas, minDystans, ll);
     }
 
-    private void setShops(final ShopAdapter adapter){
+    private void setShops(final ShopAdapter adapter) {
         shopViewModel = ViewModelProviders.of(this).get(ShopViewModel.class);
-        adapter.setShops(shopViewModel.getAllShops());
+        shopViewModel.getAllShops().observe(this, new Observer<List<Shop>>() {
+            @Override
+            public void onChanged(List<Shop> shops) {
+                adapter.setShops(shops);
+            }
+        });
+
+        Log.i("SHOP_ACTIVITY", "Called setShops();");
     }
+
+
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if(item.getTitle() == "Edit"){
+        if (item.getTitle() == "Edit") {
 
-        }
-        else if(item.getTitle() == "Delete"){
+        } else if (item.getTitle() == "Delete") {
             shopViewModel.delete(adapter.getShopAtIndex(item.getGroupId()));
         }
         return super.onContextItemSelected(item);
     }
 
-    public void clickAddShop(View view){
+    public void clickAddShop(View view) {
         AlertDialog.Builder ad = new AlertDialog.Builder(ShopListActivity.this);
         ad.setTitle("Add shop");
         ad.setMessage("Enter new shop");
@@ -103,7 +147,7 @@ public class ShopListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        shopViewModel.insert(new Shop("", name.getText().toString(), desc.getText().toString(), Double.valueOf(radius.getText().toString()), new LatLng(latitude[0],longitude[0])));
+                        shopViewModel.insert(new Shop("", name.getText().toString(), desc.getText().toString(), Double.valueOf(radius.getText().toString()), new LatLng(latitude, longitude)));
                         adapter.notifyDataSetChanged();
                     }
                 });

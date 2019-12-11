@@ -1,9 +1,12 @@
 package com.example.mp1.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.mp1.DB.Shop;
 import com.example.mp1.adapter.ShopAdapter;
@@ -25,12 +28,13 @@ public class ShopRepositoryFirebase {
     private FirebaseDatabase db;
     private DatabaseReference dr;
     private FirebaseUser user;
-    private List<Shop> allShops = new ArrayList<>();
+    private MutableLiveData<List<Shop>> allShops = new MutableLiveData<>();
 
     public ShopRepositoryFirebase(Application application) {
         this.db = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         this.dr = db.getReference("users/" + user.getUid() + "/shops");
+        this.allShops.setValue(downloadAllShops());
 
         dr.addChildEventListener(new ChildEventListener() {
             @Override
@@ -38,32 +42,37 @@ public class ShopRepositoryFirebase {
                 String shopId = dataSnapshot.child("shopId").getValue().toString();
                 String name = dataSnapshot.child("name").getValue().toString();
                 String desc = dataSnapshot.child("description").getValue().toString();
-                Double radius = ((Long) dataSnapshot.child("radius").getValue()).doubleValue();
-                Double latitude = ((Long) dataSnapshot.child("location").child("latitude").getValue()).doubleValue();
-                Double longitude = ((Long) dataSnapshot.child("location").child("longitude").getValue()).doubleValue();
+                Long radius = dataSnapshot.child("radius").getValue(Long.class);
+                Long latitude = dataSnapshot.child("location").child("latitude").getValue(Long.class);
+                Long longitude = dataSnapshot.child("location").child("longitude").getValue(Long.class);
 
-                allShops.add(new Shop(shopId, name, desc, radius, new LatLng(latitude, longitude)));
+                Log.i("SHOP_REPO","Called onChildAdded" );
+                allShops.getValue().add(new Shop(shopId, name, desc, radius.doubleValue(), new LatLng(latitude.doubleValue(), longitude.doubleValue())));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                for (Shop shop : allShops) {
+                List<Shop> tmp = allShops.getValue();
+                for (Shop shop : tmp) {
                     if (shop.getShopId().equals(dataSnapshot.getKey())) {
                         shop.setName(dataSnapshot.child("name").getValue().toString());
                         shop.setDescription(dataSnapshot.child("description").getValue().toString());
                         shop.setRadius(((Long) dataSnapshot.child("radius").getValue()).doubleValue());
                     }
                 }
+                allShops.setValue(tmp);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                List<Shop> tmp = allShops.getValue();
                 Shop shopToDelete = null;
-                for (Shop shop : allShops) {
+                for (Shop shop : tmp) {
                     if (shop.getShopId().equals(dataSnapshot.getKey()))
                         shopToDelete = shop;
                 }
-                allShops.remove(shopToDelete);
+                tmp.remove(shopToDelete);
+                allShops.setValue(tmp);
             }
 
             @Override
@@ -78,8 +87,26 @@ public class ShopRepositoryFirebase {
         });
     }
 
-    public List<Shop> getAllShops() {
+    public LiveData<List<Shop>> getAllShops() {
         return allShops;
+    }
+
+    private List<Shop> downloadAllShops(){
+        final List<Shop> shops = new ArrayList<>();
+
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                allShops.setValue(shops);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return shops;
     }
 
     public void insert(Shop shop) {

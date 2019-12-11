@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.example.mp1.DB.Shop;
 import com.example.mp1.repository.ShopRepositoryFirebase;
@@ -13,7 +14,7 @@ import java.util.List;
 public class ShopViewModel extends AndroidViewModel {
 
     private ShopRepositoryFirebase repository;
-    private List<Shop> allShops;
+    private LiveData<List<Shop>> allShops;
 
     public ShopViewModel(@NonNull Application application) {
         super(application);
@@ -21,23 +22,24 @@ public class ShopViewModel extends AndroidViewModel {
         refreshAllShops();
     }
 
-    private void refreshAllShops(){
+    private void refreshAllShops() {
+
         allShops = repository.getAllShops();
     }
 
-    public List<Shop> getAllShops(){
-        return  allShops;
+    public LiveData<List<Shop>> getAllShops() {
+        return allShops;
     }
 
-    public void insert(Shop shop){
+    public void insert(Shop shop) {
         repository.insert(shop);
     }
 
-    public void update(Shop shop){
+    public void update(Shop shop) {
         repository.update(shop);
     }
 
-    public void delete(Shop shop){
+    public void delete(Shop shop) {
         repository.delete(shop);
     }
 }

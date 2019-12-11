@@ -50,12 +50,12 @@ public class OptionsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        etSize.setTextColor(sp.getInt("colorTheme", 0x000000));
-        tvSize.setTextColor(sp.getInt("colorTheme", 0x000000));
-        tvColor.setTextColor(sp.getInt("colorTheme", 0x000000));
-        btColor.setTextColor(sp.getInt("colorTheme", 0x000000));
-        btSave.setTextColor(sp.getInt("colorTheme", 0x000000));
-        tvOptions.setTextColor(sp.getInt("colorTheme", 0x000000));
+        etSize.setTextColor(sp.getInt("colorTheme", 0xFF000000));
+        tvSize.setTextColor(sp.getInt("colorTheme", 0xFF000000));
+        tvColor.setTextColor(sp.getInt("colorTheme", 0xFF000000));
+        btColor.setTextColor(sp.getInt("colorTheme", 0xFF000000));
+        btSave.setTextColor(sp.getInt("colorTheme", 0xFF000000));
+        tvOptions.setTextColor(sp.getInt("colorTheme", 0xFF000000));
 
         etSize.setTextSize(sp.getInt("size", 14));
         tvSize.setTextSize(sp.getInt("size", 14));

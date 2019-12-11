@@ -37,7 +37,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopViewHolder
             Shop s = shopList.get(position);
             holder.tvShopName.setText(s.getName());
             holder.tvDesc.setText(s.getDescription());
-            holder.tvRadius.setText(String.valueOf(s.getRadius()));
+            holder.tvRadius.setText("Radius: " + s.getRadius());
             holder.tvLatLng.setText(String.valueOf(s.getLocation()));
         } else{
             holder.tvShopName.setText("None");
